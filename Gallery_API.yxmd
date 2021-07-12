@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<AlteryxDocument yxmdVer="2021.1">
+  <Nodes>
+    <Node ToolID="1">
+      <GuiSettings Plugin="JupyterCode">
+        <Position x="54" y="54" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <WorkflowName>c:\users\matthew.paden\onedrive - alteryx.com\documents\cases\python_sme\gallery_api.yxmd</WorkflowName>
+          <JupyterGuidDir>32cd07ef-7baa-48f2-b101-1dac9a751bd6</JupyterGuidDir>
+          <JupyterProduction>false</JupyterProduction>
+          <vEnvName>designerbasetools_venv</vEnvName>
+          <DefaultVenv>1</DefaultVenv>
+          <productionModeScript />
+          <Port>59826</Port>
+          <JupyterGuidCopy />
+          <LastExecutedByEngineVersion>2021.1.4.26400</LastExecutedByEngineVersion>
+          <Notebook><![CDATA[{"cells":[{"cell_type":"markdown","metadata":{"ayx":{"cell_class":"text_cell","cell_css":"border: 3px solid #357; margin: 4px; background: #fbffff","cell_type":"markdown","contents_keyword":"Alteryx.help()","first_line":"Run `Alteryx.help()` for info about useful functions.","label":"info"}},"source":["Run `Alteryx.help()` for info about useful functions.  \n","i.e., `Alteryx.read(\"#1\")`, `Alteryx.write(df,1)`, `Alteryx.getWorkflowConstant(\"Engine.WorkflowDirectory\")`"]},{"cell_type":"code","execution_count":1,"metadata":{"ayx":{"cell_class":"code_cell","cell_css":"border: 1px solid #58a; margin: 2px;","cell_type":"code","contents_keyword":"installPackages","first_line":"# List all non-standard packages to be imported by your","label":"deps"}},"outputs":[],"source":["# List all non-standard packages to be imported by your \n","# script here (only missing packages will be installed)\n","from ayx import Package\n","#Package.installPackages(['requests_oauthlib'])"]},{"cell_type":"code","execution_count":2,"metadata":{},"outputs":[],"source":["from ayx import Alteryx\n","import requests\n","from requests_oauthlib import OAuth1\n","from pandas import DataFrame\n","\n","#auth key and secert from the Gallery admin page\n","#OAuth1 takes 4 arguments: (APP_KEY, APP_SECERT,\n","#                            OAuthToken, OAuth_Token_Secert)\n","#they are by position or you can tell it what each are\n","#https://docs.python-requests.org/en/master/user/authentication/\n","#('client_key',\n","#   client_secret='client_secret',\n","#   resource_owner_key='resource_owner_key',\n","#   resource_owner_secret='resource_owner_secret')\n","\n","auth = OAuth1('8D8A1008353CD0655d44b4aaf098d317fe9a220a9ebe4e9b2c7dab2',client_secret = '4b65959ce9286bcc05264afb27df729ae4115f07fa44b204cdade1b4b424dcad')\n","\n","#when making the get request you can put the url in as a raw string \n","#or you can use a variable like \"url\" and make it more flexable\n","r = requests.get(r\"http://rm-lt-477.extendthereach.com:80/gallery/api/admin/v1/workflows/\", auth=auth)\n","\n","#this print statement should come back 200 if it is working\n","print(r)\n","\n","#puts the content in a list type there are other options\n","#r.text (will be str type)\n","#r.content (will be bytes type)\n","json_list = r.json()\n","\n","#create an empty list so while in the loop we can append the new workflow name\n","wf_list = []\n","\n","#This is looping through the list and breaks out each index into its own\n","#ele. Then takes the indexs that are fileName and makes it a list then \n","#takes each new list that has the index ele of 'fileName' and appends/adds\n","#to the list wf_list\n","for ele in json_list:\n","    wf_list += [ele['fileName']]\n","\n","#this makes a dataframe with the full list and makes the\n","#column header 'Workflow Names'\n","wf_df = DataFrame(wf_list, columns=['Workflow Names'])\n","\n","#writes that dataframe out to output connection 1\n","Alteryx.write(wf_df, 1)"]},{"cell_type":"code","execution_count":null,"metadata":{},"outputs":[],"source":[]}],"metadata":{"kernelspec":{"display_name":"designerbasetools_venv","language":"python","name":"designerbasetools_venv"},"language_info":{"codemirror_mode":{"name":"ipython","version":3},"file_extension":".py","mimetype":"text/x-python","name":"python","nbconvert_exporter":"python","pygments_lexer":"ipython3","version":"3.8.5"}},"nbformat":4,"nbformat_minor":2}]]></Notebook>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxJupyterPluginEngine.dll" EngineDllEntryPoint="AlteryxJupyter" />
+    </Node>
+  </Nodes>
+  <Connections />
+  <Properties>
+    <Memory default="True" />
+    <GlobalRecordLimit value="0" />
+    <TempFiles default="True" />
+    <Annotation on="True" includeToolName="False" />
+    <ConvErrorLimit value="10" />
+    <ConvErrorLimit_Stop value="False" />
+    <CancelOnError value="False" />
+    <DisableBrowse value="False" />
+    <EnablePerformanceProfiling value="False" />
+    <DisableAllOutput value="False" />
+    <ShowAllMacroMessages value="False" />
+    <ShowConnectionStatusIsOn value="True" />
+    <ShowConnectionStatusOnlyWhenRunning value="True" />
+    <ZoomLevel value="0" />
+    <LayoutType>Horizontal</LayoutType>
+    <MetaInfo>
+      <NameIsFileName value="True" />
+      <Name>Gallery_API</Name>
+      <Description />
+      <RootToolName />
+      <ToolVersion />
+      <ToolInDb value="False" />
+      <CategoryName />
+      <SearchTags />
+      <Author />
+      <Company />
+      <Copyright />
+      <DescriptionLink actual="" displayed="" />
+      <Example>
+        <Description />
+        <File />
+      </Example>
+    </MetaInfo>
+    <Events>
+      <Enabled value="True" />
+    </Events>
+  </Properties>
+</AlteryxDocument>
